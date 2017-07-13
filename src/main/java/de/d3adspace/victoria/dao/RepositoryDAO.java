@@ -7,6 +7,7 @@ import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 import de.d3adspace.victoria.lifecycle.skeleton.SkeletonLifecycleWatcher;
 import de.d3adspace.victoria.meta.EntityMetaContainer;
 import de.d3adspace.victoria.meta.EntityMetaContainerFactory;
+import de.d3adspace.victoria.validation.Validate;
 
 /**
  * Basic DAO implementation.
@@ -49,22 +50,23 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void saveElement(ElementType element) {
-        String entityId = entityMetaContainer.extractId(element);
+        Validate.checkNotNull(element, "element cannot be null");
 
+        String entityId = entityMetaContainer.extractId(element);
         EntityTTL entityTTL = entityMetaContainer.getEntityTTL(element);
         int expiry = entityTTL == null ? 0 : entityTTL.value();
 
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, expiry, element);
 
         this.lifecycleWatcher.prePersist(element, entityDocument);
-
         this.repository.upsert(entityDocument);
-
         this.lifecycleWatcher.postPersist(element, entityDocument);
     }
 
     @Override
     public ElementType getElement(String id) {
+        Validate.checkNotNull(id, "id cannot be null");
+
         EntityDocument<ElementType> entityDocument = repository.get(id, elementClazz);
         ElementType element = entityDocument.content();
 
@@ -75,11 +77,15 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void removeElement(String id) {
+        Validate.checkNotNull(id, "id cannot be null");
+
         repository.remove(id, elementClazz);
     }
 
     @Override
     public void removeElement(ElementType element) {
+        Validate.checkNotNull(element, "element cannot be null");
+
         String entityId = entityMetaContainer.extractId(element);
 
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, element);
@@ -88,11 +94,15 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public boolean exists(String id) {
+        Validate.checkNotNull(id, "element cannot be null");
+
         return this.repository.exists(id);
     }
 
     @Override
     public boolean exists(ElementType element) {
+        Validate.checkNotNull(element, "element cannot be null");
+
         String entityId = entityMetaContainer.extractId(element);
 
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, element);
