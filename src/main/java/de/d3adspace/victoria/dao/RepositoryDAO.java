@@ -2,6 +2,9 @@ package de.d3adspace.victoria.dao;
 
 import com.couchbase.client.java.document.EntityDocument;
 import com.couchbase.client.java.repository.Repository;
+import de.d3adspace.victoria.annotation.EntityTTL;
+import de.d3adspace.victoria.meta.EntityMetaContainer;
+import de.d3adspace.victoria.meta.EntityMetaContainerFactory;
 
 /**
  * Basic DAO implementation.
@@ -11,10 +14,13 @@ import com.couchbase.client.java.repository.Repository;
 public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     /**
+     * meta storage
+     */
+    private static final EntityMetaContainer entityMetaContainer = EntityMetaContainerFactory.createEntityMetaContainer();
+    /**
      * Class of the elements to handle.
      */
     private final Class<ElementType> elementClazz;
-
     /**
      * Underlying repository instance.
      */
@@ -29,14 +35,19 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     RepositoryDAO(Class<ElementType> elementClazz, Repository repository) {
         this.elementClazz = elementClazz;
         this.repository = repository;
+
+        entityMetaContainer.preloadMeta(elementClazz);
     }
 
     @Override
     public void saveElement(ElementType element) {
+        String entityId = entityMetaContainer.extractId(element);
 
-        //TODO: IDs
-        EntityDocument<ElementType> entityDocument = EntityDocument.create(element);
+        EntityTTL entityTTL = entityMetaContainer.getEntityTTL(element);
+        int expiry = entityTTL == null ? 0 : entityTTL.value();
 
+        EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, expiry, element);
+        System.out.println(entityDocument);
         this.repository.upsert(entityDocument);
     }
 
@@ -52,9 +63,9 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void removeElement(ElementType element) {
+        String entityId = entityMetaContainer.extractId(element);
 
-        //TODO: IDs
-        EntityDocument<ElementType> entityDocument = EntityDocument.create(element);
+        EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, element);
         this.repository.remove(entityDocument);
     }
 
@@ -65,9 +76,9 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public boolean exists(ElementType element) {
-        //TODO: IDs
-        EntityDocument<ElementType> entityDocument = EntityDocument.create(element);
+        String entityId = entityMetaContainer.extractId(element);
 
+        EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, element);
         return this.repository.exists(entityDocument);
     }
 }

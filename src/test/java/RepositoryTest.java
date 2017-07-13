@@ -1,9 +1,8 @@
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.java.document.EntityDocument;
 import com.couchbase.client.java.repository.Repository;
-import de.d3adspace.victoria.Victoria;
 import de.d3adspace.victoria.VictoriaFactory;
+import de.d3adspace.victoria.dao.DAO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,15 +19,19 @@ public class RepositoryTest {
 
         Repository repository = VictoriaFactory.createVictoria().createRepository(bucket);
 
-        /*Map<String, String> stringMap = new HashMap<>();
+        DAO<TestModel> testModelDAO = VictoriaFactory.createVictoria().createDAO(TestModel.class, bucket);
+        Map<String, String> stringMap = new HashMap<>();
         stringMap.put("Test", "doof");
-        stringMap.put("Rebirth", "Spast");
+        stringMap.put("Rebirth", "Spast1");
 
-        TestModel testModel = new TestModel(UUID.randomUUID(), stringMap);
+        UUID uuid = UUID.randomUUID();
+        System.out.println(uuid);
+        TestModel testModel = new TestModel(uuid, stringMap);
 
-        EntityDocument<TestModel> entityDocument = EntityDocument.create("victoria:test", testModel);
-        repository.upsert(entityDocument);*/
+        testModelDAO.saveElement(testModel);
 
-        System.out.println(repository.get("victoria:test", TestModel.class));
+        System.out.println(repository.get(uuid.toString(), TestModel.class));
+
+        //System.out.println(bucket.get("9627c87d-ca91-4bb6-a953-d00ac9043913"));
     }
 }

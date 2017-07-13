@@ -1,11 +1,16 @@
+import de.d3adspace.victoria.annotation.EntityId;
+import de.d3adspace.victoria.annotation.EntityTTL;
+
 import java.util.Map;
 import java.util.UUID;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
+@EntityTTL(20)
 public class TestModel {
 
+    @EntityId
     private final UUID uniqueId;
     private final Map<String, String> metaDataContainer;
 
