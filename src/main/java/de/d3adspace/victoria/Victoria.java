@@ -28,6 +28,14 @@ import de.d3adspace.victoria.dao.DAO;
 public interface Victoria {
 
     /**
+     * Create a new repository using a default gson instance.
+     *
+     * @param bucket The bucket.
+     * @return The repo.
+     */
+    Repository createRepository(Bucket bucket);
+
+    /**
      * Create a basic couchbase repository like described in <a href="http://docs.couchbase.com/sdk-api/couchbase-java-client-2.2.8/com/couchbase/client/java/repository/package-summary.html">Couchbase Repository</a>
      * but with a modified entity converter that uses GSON serialization instead of plain old java reflections based
      * property meta data for entity serialization. You can read more about the default implementation at
@@ -42,10 +50,9 @@ public interface Victoria {
      * entity converter {@link com.couchbase.client.java.repository.mapping.DefaultEntityConverter}.
      *
      * @param bucket The bucket you want to create a repository on.
+     * @param gson   The gson instance of the converter.
      * @return The repository.
      */
-    Repository createRepository(Bucket bucket);
-
     Repository createRepository(Bucket bucket, Gson gson);
 
     /**
