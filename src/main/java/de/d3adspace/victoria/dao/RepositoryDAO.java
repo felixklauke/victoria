@@ -4,15 +4,28 @@ import com.couchbase.client.java.document.EntityDocument;
 import com.couchbase.client.java.repository.Repository;
 
 /**
- *
+ * Basic DAO implementation.
  *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
+    /**
+     * Class of the elements to handle.
+     */
     private final Class<ElementType> elementClazz;
+
+    /**
+     * Underlying repository instance.
+     */
     private final Repository repository;
 
+    /**
+     * Create a new repository dao instance.
+     *
+     * @param elementClazz The class of the element to handle.
+     * @param repository   The underlying repository.
+     */
     RepositoryDAO(Class<ElementType> elementClazz, Repository repository) {
         this.elementClazz = elementClazz;
         this.repository = repository;
