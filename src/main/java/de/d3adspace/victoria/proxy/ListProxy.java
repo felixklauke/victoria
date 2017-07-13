@@ -1,8 +1,13 @@
 package de.d3adspace.victoria.proxy;
 
 import com.couchbase.client.java.Bucket;
+import com.couchbase.client.java.document.JsonArrayDocument;
+import com.couchbase.client.java.document.json.JsonArray;
 
-import java.util.*;
+import java.util.AbstractList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -15,8 +20,16 @@ public class ListProxy<ElementType> extends AbstractList<ElementType> {
 
     public ListProxy(String listName, Bucket bucket) {
         this.listName = listName;
-        this.wrappedHandle = new ArrayList<>();
         this.bucket = bucket;
+
+        JsonArrayDocument jsonArrayDocument = bucket.get(listName, JsonArrayDocument.class);
+        if (jsonArrayDocument == null) {
+            jsonArrayDocument = JsonArrayDocument.create(listName, JsonArray.create());
+            bucket.upsert(jsonArrayDocument);
+        }
+
+        JsonArray jsonArray = jsonArrayDocument.content();
+        wrappedHandle = (List<ElementType>) jsonArray.toList();
     }
 
     @Override
