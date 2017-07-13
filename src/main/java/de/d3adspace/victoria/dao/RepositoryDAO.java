@@ -56,12 +56,21 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, expiry, element);
 
+        this.lifecycleWatcher.prePersist(element, entityDocument);
+
         this.repository.upsert(entityDocument);
+
+        this.lifecycleWatcher.postPersist(element, entityDocument);
     }
 
     @Override
     public ElementType getElement(String id) {
-        return repository.get(id, elementClazz).content();
+        EntityDocument<ElementType> entityDocument = repository.get(id, elementClazz);
+        ElementType element = entityDocument.content();
+
+        this.lifecycleWatcher.postLoad(element, entityDocument);
+
+        return element;
     }
 
     @Override
@@ -94,7 +103,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         return lifecycleWatcher;
     }
 
-    public void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {
+    void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {
         this.lifecycleWatcher = lifecycleWatcher;
     }
 }

@@ -10,4 +10,6 @@ public interface LifecycleWatcher<ElementType> {
     void prePersist(ElementType element, EntityDocument<ElementType> entityDocument);
 
     void postLoad(ElementType element, EntityDocument<ElementType> entityDocument);
+
+    void postPersist(ElementType element, EntityDocument<ElementType> entityDocument);
 }
