@@ -5,14 +5,27 @@ import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonObject;
 import com.couchbase.client.java.repository.mapping.EntityConverter;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
+ * You have reached the first goal of victoria: the replacement of couchbase's default entity converter.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class GSONEntityConverter implements EntityConverter<JsonDocument> {
 
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    /**
+     * Underlying gson instance.
+     */
+    private final Gson gson;
+
+    /**
+     * Create a new converter instance.
+     *
+     * @param gson The underlying gson instance.
+     */
+    public GSONEntityConverter(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public JsonDocument fromEntity(EntityDocument<Object> entityDocument) {

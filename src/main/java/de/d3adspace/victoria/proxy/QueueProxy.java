@@ -11,14 +11,33 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
+ * Proxied Queue connected with a Couchbase bucket with backed CRUD operations.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class QueueProxy<ElementType> extends AbstractQueue<ElementType> {
 
+    /**
+     * Underlying backed queue.
+     */
     private final Queue<ElementType> wrappedHandle;
+
+    /**
+     * ID if the JSONArrayDocument in the database.
+     */
     private final String queueName;
+
+    /**
+     * Bucket containing the needed data.
+     */
     private final Bucket bucket;
 
+    /**
+     * Create a new proxy for a queue.
+     *
+     * @param queueName The name of the queue in the database.
+     * @param bucket    The bucket.
+     */
     public QueueProxy(String queueName, Bucket bucket) {
         this.queueName = queueName;
         this.bucket = bucket;

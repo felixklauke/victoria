@@ -33,7 +33,7 @@ public class SimpleConverterInjector implements ConverterInjector {
     public void injectConverter(Repository repository, EntityConverter entityConverter) {
         try {
             AsyncRepository asyncRepository = (AsyncRepository) ASYNC_REPO_FIELD.get(repository);
-            CONVERTER_FIELD.set(asyncRepository, new GSONEntityConverter());
+            CONVERTER_FIELD.set(asyncRepository, new GSONEntityConverter(gson));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

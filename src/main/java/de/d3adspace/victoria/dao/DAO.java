@@ -14,13 +14,41 @@ public interface DAO<ElementType> {
      */
     void saveElement(ElementType element);
 
+    /**
+     * Get an element by its id.
+     *
+     * @param id The entity id.
+     * @return The element.
+     */
     ElementType getElement(String id);
 
+    /**
+     * Remove an element by its id.
+     *
+     * @param id The id.
+     */
     void removeElement(String id);
 
+    /**
+     * Remove an element by its instance.
+     *
+     * @param element The element.
+     */
     void removeElement(ElementType element);
 
+    /**
+     * Check if an entity with an id exists.
+     *
+     * @param id The entity id.
+     * @return If the entity exists.
+     */
     boolean exists(String id);
 
+    /**
+     * Check if there is a database entry of the given element.
+     *
+     * @param element The element.
+     * @return If there is a database entry.
+     */
     boolean exists(ElementType element);
 }

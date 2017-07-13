@@ -4,6 +4,8 @@ import com.couchbase.client.java.document.EntityDocument;
 import com.couchbase.client.java.repository.Repository;
 
 /**
+ *
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class RepositoryDAO<ElementType> implements DAO<ElementType> {

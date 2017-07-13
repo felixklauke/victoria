@@ -2,6 +2,7 @@ package de.d3adspace.victoria;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.repository.Repository;
+import com.google.gson.Gson;
 import de.d3adspace.victoria.dao.DAO;
 
 /**
@@ -44,6 +45,8 @@ public interface Victoria {
      * @return The repository.
      */
     Repository createRepository(Bucket bucket);
+
+    Repository createRepository(Bucket bucket, Gson gson);
 
     /**
      * Create a database access object that pulls out the basic crud operations out off a repository.
