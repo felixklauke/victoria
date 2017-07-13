@@ -2,6 +2,7 @@ package de.d3adspace.victoria;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.repository.Repository;
+import de.d3adspace.victoria.dao.DAO;
 
 /**
  * Basic victoria interface containing all main functions.
@@ -43,4 +44,14 @@ public interface Victoria {
      * @return The repository.
      */
     Repository createRepository(Bucket bucket);
+
+    /**
+     * Create a database access object that pulls out the basic crud operations out off a repository.
+     *
+     * @param elementClazz  The class of the entity you're persisting.
+     * @param bucket        The bucket to create a repository from.
+     * @param <ElementType> The type of the entity you're persisting.
+     * @return The DAO.
+     */
+    <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket);
 }

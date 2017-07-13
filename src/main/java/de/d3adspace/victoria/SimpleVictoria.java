@@ -4,6 +4,8 @@ import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.repository.CouchbaseRepository;
 import com.couchbase.client.java.repository.Repository;
 import de.d3adspace.victoria.converter.GSONEntityConverter;
+import de.d3adspace.victoria.dao.DAO;
+import de.d3adspace.victoria.dao.DAOFactory;
 import de.d3adspace.victoria.injector.ConverterInjector;
 
 /**
@@ -32,5 +34,10 @@ public class SimpleVictoria implements Victoria {
         Repository repository = new CouchbaseRepository(bucket, bucket.environment());
         this.converterInjector.injectConverter(repository, new GSONEntityConverter());
         return repository;
+    }
+
+    @Override
+    public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket) {
+        return DAOFactory.createDAO(elementClazz, createRepository(bucket));
     }
 }
