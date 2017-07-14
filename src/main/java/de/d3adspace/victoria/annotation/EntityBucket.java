@@ -6,11 +6,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotate an arbitrary entity class with this annotation to give the name of a couchbase bucket victoria will
+ * persist the entities of this class to.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface EntityBucket {
 
+    /**
+     * Get the name of the couchbase bucket.
+     *
+     * @return The name of the bucket.
+     */
     String value() default "high";
 }
