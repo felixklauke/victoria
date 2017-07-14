@@ -1,13 +1,20 @@
 package de.d3adspace.victoria.dao;
 
+import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.EntityDocument;
+import com.couchbase.client.java.query.N1qlQuery;
+import com.couchbase.client.java.query.N1qlQueryRow;
 import com.couchbase.client.java.repository.Repository;
+import com.google.gson.Gson;
 import de.d3adspace.victoria.annotation.EntityTTL;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 import de.d3adspace.victoria.lifecycle.skeleton.SkeletonLifecycleWatcher;
 import de.d3adspace.victoria.meta.EntityMetaContainer;
 import de.d3adspace.victoria.meta.EntityMetaContainerFactory;
 import de.d3adspace.victoria.validation.Validate;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Basic DAO implementation.
@@ -25,10 +32,21 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
      * Class of the elements to handle.
      */
     private final Class<ElementType> elementClazz;
+
+    /**
+     * Underlying bucket instance.
+     */
+    private final Bucket bucket;
+
     /**
      * Underlying repository instance.
      */
     private final Repository repository;
+
+    /**
+     * Serialization via gson.
+     */
+    private final Gson gson;
 
     /**
      * Life cycle processing.
@@ -39,11 +57,14 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
      * Create a new repository dao instance.
      *
      * @param elementClazz The class of the element to handle.
+     * @param bucket The underlying bucket
      * @param repository   The underlying repository.
      */
-    RepositoryDAO(Class<ElementType> elementClazz, Repository repository) {
+    RepositoryDAO(Class<ElementType> elementClazz, Bucket bucket, Repository repository, Gson gson) {
         this.elementClazz = elementClazz;
+        this.bucket = bucket;
         this.repository = repository;
+        this.gson = gson;
         this.lifecycleWatcher = new SkeletonLifecycleWatcher<>();
 
         entityMetaContainer.preloadMeta(elementClazz);
@@ -74,6 +95,17 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         this.lifecycleWatcher.postLoad(element, entityDocument);
 
         return element;
+    }
+
+    @Override
+    public List<ElementType> getElements(N1qlQuery n1qlQuery) {
+        Validate.checkNotNull(n1qlQuery, "n1qlQuery cannot be null");
+
+        List<N1qlQueryRow> result = this.bucket.query(n1qlQuery).allRows();
+
+        return result.stream()
+                .map(row -> gson.fromJson(row.value().toString(), this.elementClazz))
+                .collect(Collectors.toList());
     }
 
     @Override

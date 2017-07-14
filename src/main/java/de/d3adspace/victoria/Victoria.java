@@ -67,6 +67,8 @@ public interface Victoria {
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket);
 
+    <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson);
+
     /**
      * Create a database access object based on a couchbase cluster.
      *

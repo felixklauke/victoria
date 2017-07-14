@@ -1,5 +1,9 @@
 package de.d3adspace.victoria.dao;
 
+import com.couchbase.client.java.query.N1qlQuery;
+
+import java.util.List;
+
 /**
  * Database access object managing basic CRUD operations on a couchbase repository.
  *
@@ -21,6 +25,8 @@ public interface DAO<ElementType> {
      * @return The element.
      */
     ElementType getElement(String id);
+
+    List<ElementType> getElements(N1qlQuery n1qlQuery);
 
     /**
      * Remove an element by its id.

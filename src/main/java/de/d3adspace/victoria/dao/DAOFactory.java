@@ -1,6 +1,8 @@
 package de.d3adspace.victoria.dao;
 
+import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.repository.Repository;
+import com.google.gson.Gson;
 import de.d3adspace.victoria.annotation.EntityWatcher;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 
@@ -14,13 +16,15 @@ public class DAOFactory {
     /**
      * Create a new dao instance.
      *
+     * @param <ElementType> The type of the element to handle.
      * @param elementClazz  The class of the elements to handle.
      * @param repository    The underlying repository.
-     * @param <ElementType> The type of the element to handle.
+     * @param bucket
+     * @param gson
      * @return The dao instance.
      */
-    public static <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Repository repository) {
-        RepositoryDAO<ElementType> dao = new RepositoryDAO<>(elementClazz, repository);
+    public static <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Repository repository, Bucket bucket, Gson gson) {
+        RepositoryDAO<ElementType> dao = new RepositoryDAO<>(elementClazz, bucket, repository, gson);
 
         if (elementClazz.isAnnotationPresent(EntityWatcher.class)) {
             try {

@@ -58,10 +58,16 @@ public class SimpleVictoria implements Victoria {
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket) {
+        return createDAO(elementClazz, bucket, DEFAULT_GSON);
+    }
+
+    @Override
+    public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson) {
         Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
         Validate.checkNotNull(bucket, "Bucket cluster can not be null.");
+        Validate.checkNotNull(gson, "gson can not be null.");
 
-        return DAOFactory.createDAO(elementClazz, createRepository(bucket));
+        return DAOFactory.createDAO(elementClazz, createRepository(bucket), bucket, gson);
     }
 
     @Override
