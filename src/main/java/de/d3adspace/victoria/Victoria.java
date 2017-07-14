@@ -22,6 +22,7 @@ import de.d3adspace.victoria.dao.DAO;
  * <ul>
  *     <li>{@link de.d3adspace.victoria.proxy.ListProxy} - Proxy to persist List's</li>
  *     <li>{@link de.d3adspace.victoria.proxy.QueueProxy} - Proxy to persist Queue's</li>
+ *     <li>{@link de.d3adspace.victoria.proxy.MapProxy} - Proxy to persist Maps</li>
  * </ul>
  *
  * @author Felix 'SasukeKawaii' Klauke
