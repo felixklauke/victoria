@@ -17,7 +17,7 @@ import de.d3adspace.victoria.validation.Validate;
 public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     /**
-     * meta storage
+     * Meta storage
      */
     private static final EntityMetaContainer entityMetaContainer = EntityMetaContainerFactory.createEntityMetaContainer();
 
@@ -33,7 +33,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     /**
      * Life cycle processing.
      */
-    private LifecycleWatcher<ElementType> lifecycleWatcher = new SkeletonLifecycleWatcher();
+    private LifecycleWatcher<ElementType> lifecycleWatcher;
 
     /**
      * Create a new repository dao instance.
@@ -44,6 +44,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     RepositoryDAO(Class<ElementType> elementClazz, Repository repository) {
         this.elementClazz = elementClazz;
         this.repository = repository;
+        this.lifecycleWatcher = new SkeletonLifecycleWatcher<>();
 
         entityMetaContainer.preloadMeta(elementClazz);
     }
@@ -107,10 +108,6 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, element);
         return this.repository.exists(entityDocument);
-    }
-
-    public LifecycleWatcher<ElementType> getLifecycleWatcher() {
-        return lifecycleWatcher;
     }
 
     void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {

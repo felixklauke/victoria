@@ -12,4 +12,8 @@ public class Validate {
     public static void checkState(boolean b, boolean b1, String message) {
         if (b != b1) throw new IllegalStateException(message);
     }
+
+    public static void checkAnnotation(Class sourceClazz, Class annotationClazz, String message) {
+        if (!sourceClazz.isAnnotationPresent(annotationClazz)) throw new IllegalArgumentException(message);
+    }
 }

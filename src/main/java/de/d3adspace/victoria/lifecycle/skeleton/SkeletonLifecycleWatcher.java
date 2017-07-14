@@ -6,15 +6,20 @@ import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
-public class SkeletonLifecycleWatcher implements LifecycleWatcher {
+public class SkeletonLifecycleWatcher<ElementType> implements LifecycleWatcher<ElementType> {
 
     @Override
-    public void prePersist(Object element, EntityDocument entityDocument) {
+    public void prePersist(ElementType element, EntityDocument<ElementType> entityDocument) {
 
     }
 
     @Override
-    public void postLoad(Object element, EntityDocument entityDocument) {
+    public void postLoad(ElementType element, EntityDocument<ElementType> entityDocument) {
+
+    }
+
+    @Override
+    public void postPersist(ElementType element, EntityDocument<ElementType> entityDocument) {
 
     }
 }
