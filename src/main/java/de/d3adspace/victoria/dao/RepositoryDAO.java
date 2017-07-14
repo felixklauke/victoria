@@ -13,7 +13,9 @@ import de.d3adspace.victoria.meta.EntityMetaContainer;
 import de.d3adspace.victoria.meta.EntityMetaContainerFactory;
 import de.d3adspace.victoria.validation.Validate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -93,7 +95,6 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         ElementType element = entityDocument.content();
 
         this.lifecycleWatcher.postLoad(element, entityDocument);
-
         return element;
     }
 
@@ -102,10 +103,14 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         Validate.checkNotNull(n1qlQuery, "n1qlQuery cannot be null");
 
         List<N1qlQueryRow> result = this.bucket.query(n1qlQuery).allRows();
+        if (result.size() == 0) return new ArrayList<>();
 
-        return result.stream()
-                .map(row -> gson.fromJson(row.value().toString(), this.elementClazz))
-                .collect(Collectors.toList());
+        Map<N1qlQueryRow, ElementType> elements = result.stream()
+                .collect(Collectors.toMap(p -> p, p -> gson.fromJson(p.value().toString(), this.elementClazz)));
+
+        elements.forEach((queryRow, element) -> this.lifecycleWatcher.postLoad(element, queryRow));
+
+        return new ArrayList<>(elements.values());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package de.d3adspace.victoria.lifecycle.skeleton;
 
 import com.couchbase.client.java.document.EntityDocument;
+import com.couchbase.client.java.query.N1qlQueryRow;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 
 /**
@@ -15,6 +16,11 @@ public class SkeletonLifecycleWatcher<ElementType> implements LifecycleWatcher<E
 
     @Override
     public void postLoad(ElementType element, EntityDocument<ElementType> entityDocument) {
+
+    }
+
+    @Override
+    public void postLoad(ElementType element, N1qlQueryRow row) {
 
     }
 
