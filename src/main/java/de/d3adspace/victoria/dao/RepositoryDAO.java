@@ -99,6 +99,19 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     }
 
     @Override
+    public ElementType getElement(N1qlQuery query) {
+        Validate.checkNotNull(query, "query cannot be null");
+
+        List<ElementType> elements = this.getElements(query);
+
+        if (elements.size() == 0) {
+            return null;
+        }
+
+        return elements.get(0);
+    }
+
+    @Override
     public List<ElementType> getElements(N1qlQuery n1qlQuery) {
         Validate.checkNotNull(n1qlQuery, "n1qlQuery cannot be null");
 
@@ -106,7 +119,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         if (result.size() == 0) return new ArrayList<>();
 
         Map<N1qlQueryRow, ElementType> elements = result.stream()
-                .collect(Collectors.toMap(p -> p, p -> gson.fromJson(p.value().toString(), this.elementClazz)));
+                .collect(Collectors.toMap(p -> p, p -> gson.fromJson(p.value().getObject(this.bucket.name()).toString(), this.elementClazz)));
 
         elements.forEach((queryRow, element) -> this.lifecycleWatcher.postLoad(element, queryRow));
 

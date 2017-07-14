@@ -26,6 +26,8 @@ public interface DAO<ElementType> {
      */
     ElementType getElement(String id);
 
+    ElementType getElement(N1qlQuery query);
+
     List<ElementType> getElements(N1qlQuery n1qlQuery);
 
     /**
