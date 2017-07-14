@@ -5,6 +5,10 @@ package de.d3adspace.victoria.validation;
  */
 public class Validate {
 
+    private Validate() {
+        throw new AssertionError("Can not instantiate Validate.");
+    }
+
     public static void checkNotNull(Object object, String message) {
         if (object == null) {
             throw new IllegalArgumentException(message);
