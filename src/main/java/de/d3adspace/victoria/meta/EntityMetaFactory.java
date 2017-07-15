@@ -22,11 +22,13 @@ public class EntityMetaFactory {
         EntityTTL entityTTL = (EntityTTL) elementClazz.getAnnotation(EntityTTL.class);
 
         Field idField = null;
+        String idPrefix = "";
 
         for (Field field : elementClazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(EntityId.class)) {
                 field.setAccessible(true);
                 idField = field;
+                idPrefix = field.getAnnotation(EntityId.class).prefix();
             }
         }
 
