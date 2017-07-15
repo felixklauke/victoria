@@ -161,21 +161,29 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void getElement(String id, Consumer<ElementType> consumer) {
+        Validate.checkNotNull(consumer, "consumer cannot be null");
+
         this.executorService.execute(() -> consumer.accept(this.getElement(id)));
     }
 
     @Override
     public void getElement(N1qlQuery query, Consumer<ElementType> consumer) {
+        Validate.checkNotNull(consumer, "consumer cannot be null");
+
         this.executorService.execute(() -> consumer.accept(this.getElement(query)));
     }
 
     @Override
     public void getElements(N1qlQuery n1qlQuery, Consumer<List<ElementType>> consumer) {
+        Validate.checkNotNull(consumer, "consumer cannot be null");
+
         this.executorService.execute(() -> consumer.accept(this.getElements(n1qlQuery)));
     }
 
     @Override
     public void getAllElements(Consumer<List<ElementType>> consumer) {
+        Validate.checkNotNull(consumer, "consumer cannot be null");
+
         this.executorService.execute(() -> consumer.accept(this.getAllElements()));
     }
 
