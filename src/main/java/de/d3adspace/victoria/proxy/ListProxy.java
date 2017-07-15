@@ -3,6 +3,7 @@ package de.d3adspace.victoria.proxy;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.JsonArrayDocument;
 import com.couchbase.client.java.document.json.JsonArray;
+import de.d3adspace.victoria.proxy.iterator.IteratorProxy;
 
 import java.util.AbstractList;
 import java.util.Collection;
@@ -68,6 +69,6 @@ public class ListProxy<ElementType> extends AbstractList<ElementType> {
 
     @Override
     public Iterator<ElementType> iterator() {
-        return super.iterator();
+        return new IteratorProxy<>(this.wrappedHandle.iterator(), this::remove);
     }
 }
