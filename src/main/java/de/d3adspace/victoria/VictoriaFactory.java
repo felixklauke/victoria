@@ -2,6 +2,7 @@ package de.d3adspace.victoria;
 
 import de.d3adspace.victoria.injector.ConverterInjector;
 import de.d3adspace.victoria.injector.ConverterInjectorFactory;
+import de.d3adspace.victoria.validation.Validate;
 
 /**
  * Factory for all victoria instances.
@@ -17,6 +18,8 @@ public class VictoriaFactory {
      * @return The victoria instance.
      */
     private static Victoria createVictoria(ConverterInjector converterInjector) {
+        Validate.checkNotNull(converterInjector, "injector cannot be null");
+
         return new SimpleVictoria(converterInjector);
     }
 
