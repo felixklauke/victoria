@@ -29,6 +29,8 @@ import de.d3adspace.victoria.dao.DAO;
  *     </code>
  * </pre>
  *
+ * It is possible to listen for entity conversion using an {@link ConversionInterceptor}
+ *
  * Remember: DAOs will also use an internal instance of a gson modified couchbase repository.
  *
  * The secondary goal is to hide the couchbase database access layer behind the proxy pattern and take default java
@@ -73,6 +75,14 @@ public interface Victoria {
      */
     Repository createRepository(Bucket bucket, Gson gson);
 
+    /**
+     * Create a repository with all its necessary data.
+     *
+     * @param bucket                The bucket.
+     * @param gson                  The gson instance.
+     * @param conversionInterceptor The conversion interceptor.
+     * @return The repository.
+     */
     Repository createRepository(Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor);
 
     /**
@@ -85,6 +95,15 @@ public interface Victoria {
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket);
 
+    /**
+     * Create a dao by its base class, the bucket and an interceptor using a default gson instance.
+     *
+     * @param elementClazz The class of the element you're persisting.
+     * @param bucket The bucket the entities are persisted in.
+     * @param conversionInterceptor The conversion interceptor.
+     * @param <ElementType> The type of the entity you're persisting.
+     * @return The DAO.
+     */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, ConversionInterceptor conversionInterceptor);
 
     /**
@@ -92,12 +111,22 @@ public interface Victoria {
      *
      * @param elementClazz  The class of the element you're persisting.
      * @param bucket        The bucket the entities are persisted in.
-     * @param gson          The gson instance,
+     * @param gson          The gson instance.
      * @param <ElementType> The type of the entity you're persisting.
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson);
 
+    /**
+     * Create a DAO by all its necessary data.
+     *
+     * @param elementClazz The class of the element you're persisting.
+     * @param bucket The bucket the entities are persisted in.
+     * @param gson The gson instance.
+     * @param conversionInterceptor The conversion interceptor.
+     * @param <ElementType> The type of the entity you're persisting.
+     * @return The DAO.
+     */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor);
 
     /**
@@ -110,6 +139,15 @@ public interface Victoria {
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster);
 
+    /**
+     * Create a DAO by all its data except of the gson instance, a default instance will be used instead.
+     *
+     * @param elementClazz The class of the entity you're persisting.
+     * @param couchbaseCluster The cluster whose bucket you want to use.
+     * @param conversionInterceptor The conversion interceptor.
+     * @param <ElementType> The type of the entity you're persisting.
+     * @return The DAO.
+     */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, ConversionInterceptor conversionInterceptor);
 
     /**
@@ -122,5 +160,15 @@ public interface Victoria {
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson);
 
+    /**
+     * Create a DAO by all its data but a couchbase cluster the bucket will be taken from.
+     *
+     * @param elementClazz The class of the entity you're persisting.
+     * @param couchbaseCluster The cluster whose bucket you want to use.
+     * @param gson The gson instance.
+     * @param conversionInterceptor The conversion interceptor.
+     * @param <ElementType> The type of the entity you're persisting.
+     * @return The DAO.
+     */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson, ConversionInterceptor conversionInterceptor);
 }
