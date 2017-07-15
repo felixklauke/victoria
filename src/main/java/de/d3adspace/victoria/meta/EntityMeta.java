@@ -23,5 +23,12 @@ public interface EntityMeta {
      */
     Field getIdField();
 
+    /**
+     * Get the prefix for all document ids.
+     *
+     * @return The prefix.
+     */
     String getIdPrefix();
+
+    String getType();
 }

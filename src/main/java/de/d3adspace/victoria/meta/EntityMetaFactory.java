@@ -2,6 +2,7 @@ package de.d3adspace.victoria.meta;
 
 import de.d3adspace.victoria.annotation.EntityId;
 import de.d3adspace.victoria.annotation.EntityTTL;
+import de.d3adspace.victoria.annotation.EntityType;
 
 import java.lang.reflect.Field;
 
@@ -32,6 +33,9 @@ public class EntityMetaFactory {
             }
         }
 
-        return new SimpleEntityMeta(entityTTL, idField, idPrefix);
+        EntityType entityType = (EntityType) elementClazz.getAnnotation(EntityType.class);
+        String type = entityType == null ? "" : entityType.value();
+
+        return new SimpleEntityMeta(entityTTL, idField, idPrefix, type);
     }
 }

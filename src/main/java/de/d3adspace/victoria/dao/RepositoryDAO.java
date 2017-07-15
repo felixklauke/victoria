@@ -9,6 +9,7 @@ import com.couchbase.client.java.repository.Repository;
 import com.google.gson.Gson;
 import de.d3adspace.victoria.container.EntityMetaContainer;
 import de.d3adspace.victoria.container.EntityMetaContainerFactory;
+import de.d3adspace.victoria.exception.VictoriaException;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 import de.d3adspace.victoria.lifecycle.skeleton.SkeletonLifecycleWatcher;
 import de.d3adspace.victoria.proxy.ListProxy;
@@ -129,8 +130,20 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public List<ElementType> getAllElements() {
-        String prefix = entityMetaContainer.getIdPrefix(this.elementClazz);
-        N1qlQueryResult result = CouchbaseN1qlProxy.getAllElementsByIdPrefix(this.bucket, prefix);
+        N1qlQueryResult result = null;
+
+        String type = entityMetaContainer.getEntityType(this.elementClazz);
+        if (type != null) {
+            result = CouchbaseN1qlProxy.getAllElementsByType(this.bucket, type);
+        } else {
+            String prefix = entityMetaContainer.getIdPrefix(this.elementClazz);
+            result = CouchbaseN1qlProxy.getAllElementsByIdPrefix(this.bucket, prefix);
+        }
+
+        if (result == null) {
+            throw new VictoriaException("Could not fetch all elements. You should check for an @EntityType annotation or a valid prefix.");
+        }
+
         return getElementsFromQueryResult(result);
     }
 
@@ -180,7 +193,12 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     @Override
     public List<ElementType> getListProxy(String listDocumentName) {
         return new ListProxy<>(listDocumentName, this.bucket);
-    } 
+    }
+
+    @Override
+    public int count() {
+        return this.getAllElements().size();
+    }
 
     private List<ElementType> getElementsFromQueryResult(N1qlQueryResult result) {
         List<N1qlQueryRow> rows = result.allRows();

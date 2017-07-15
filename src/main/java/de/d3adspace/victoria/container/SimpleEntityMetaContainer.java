@@ -52,4 +52,9 @@ public class SimpleEntityMetaContainer implements EntityMetaContainer {
         EntityMeta entityMeta = EntityMetaFactory.createEntityMeta(elementClazz);
         this.entityMeta.put(elementClazz, entityMeta);
     }
+
+    @Override
+    public String getEntityType(Class elementClazz) {
+        return this.entityMeta.get(elementClazz).getType();
+    }
 }

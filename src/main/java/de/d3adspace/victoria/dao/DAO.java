@@ -88,9 +88,32 @@ public interface DAO<ElementType> {
      */
     boolean exists(ElementType element);
 
+    /**
+     * Get the watcher to handle dao operations.
+     *
+     * @return The watcher.
+     */
     LifecycleWatcher<ElementType> getLifecycleWatcher();
 
+    /**
+     * Set the watcher. Tip: Use an {@link de.d3adspace.victoria.decorator.LifeCycleWatcherDecorator}
+     *
+     * @param lifecycleWatcher The watcher.
+     */
     void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher);
 
+    /**
+     * Get a list proxy {@link de.d3adspace.victoria.proxy.ListProxy}
+     *
+     * @param listDocumentName The name of the list in the database.
+     * @return The list proxy.
+     */
     List<ElementType> getListProxy(String listDocumentName);
+
+    /**
+     * Count how many arguments are available.
+     *
+     * @return The count of entities.
+     */
+    int count();
 }

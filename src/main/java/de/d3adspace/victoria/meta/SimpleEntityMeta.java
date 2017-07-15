@@ -27,15 +27,22 @@ public class SimpleEntityMeta implements EntityMeta {
     private final String idPrefix;
 
     /**
+     * The type embedded in the document.
+     */
+    private final String type;
+
+    /**
      * Create a new meta data holder by all its data.
      * @param entityTTL The ttl.
      * @param idField   The field.
      * @param idPrefix The prefix og the id.
+     * @param type
      */
-    SimpleEntityMeta(EntityTTL entityTTL, Field idField, String idPrefix) {
+    SimpleEntityMeta(EntityTTL entityTTL, Field idField, String idPrefix, String type) {
         this.entityTTL = entityTTL;
         this.idField = idField;
         this.idPrefix = idPrefix;
+        this.type = type;
     }
 
     @Override
@@ -51,5 +58,10 @@ public class SimpleEntityMeta implements EntityMeta {
     @Override
     public String getIdPrefix() {
         return idPrefix;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 }

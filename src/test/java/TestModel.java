@@ -1,6 +1,4 @@
-import de.d3adspace.victoria.annotation.EntityId;
-import de.d3adspace.victoria.annotation.EntityTTL;
-import de.d3adspace.victoria.annotation.EntityWatcher;
+import de.d3adspace.victoria.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -9,6 +7,8 @@ import java.util.UUID;
  * @author Felix 'SasukeKawaii' Klauke
  */
 @EntityTTL(20)
+@EntityBucket("high")
+@EntityType("testModel")
 @EntityWatcher(TestModelWatcher.class)
 public class TestModel {
 

@@ -23,7 +23,13 @@ public interface EntityMetaContainer {
      */
     String extractId(Object element);
 
-    String getIdPrefix(Class elementCLazz);
+    /**
+     * Get the prefix for all document ids.
+     *
+     * @param elementClazz The class of the element.
+     * @return The id.
+     */
+    String getIdPrefix(Class elementClazz);
 
     /**
      * Preload entity meta data.
@@ -31,4 +37,6 @@ public interface EntityMetaContainer {
      * @param elementClazz The class of the element.
      */
     void preloadMeta(Class elementClazz);
+
+    String getEntityType(Class elementClazz);
 }
