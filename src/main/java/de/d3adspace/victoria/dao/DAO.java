@@ -92,5 +92,5 @@ public interface DAO<ElementType> {
 
     void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher);
 
-    List<ElementType> getProxiedList(String listDocumentName);
+    List<ElementType> getListProxy(String listDocumentName);
 }
