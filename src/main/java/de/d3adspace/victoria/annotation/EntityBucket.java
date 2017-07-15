@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @author Felix 'SasukeKawaii' Klauke
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 public @interface EntityBucket {
 
     /**
