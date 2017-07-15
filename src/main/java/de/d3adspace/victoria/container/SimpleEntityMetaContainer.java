@@ -7,12 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Basic implementation for the entity meta container.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class SimpleEntityMetaContainer implements EntityMetaContainer {
 
+    /**
+     * Underlying map.
+     */
     private final Map<Class, EntityMeta> entityMeta;
 
+    /**
+     * Basic constructor.
+     */
     SimpleEntityMetaContainer() {
         this.entityMeta = new HashMap<>();
     }

@@ -19,8 +19,8 @@ public class DAOFactory {
      * @param <ElementType> The type of the element to handle.
      * @param elementClazz  The class of the elements to handle.
      * @param repository    The underlying repository.
-     * @param bucket
-     * @param gson
+     * @param bucket The bucket the dao will work with.
+     * @param gson The gson instance.
      * @return The dao instance.
      */
     public static <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Repository repository, Bucket bucket, Gson gson) {

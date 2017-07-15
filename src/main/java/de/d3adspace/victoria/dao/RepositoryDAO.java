@@ -127,7 +127,6 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
                 .collect(Collectors.toMap(p -> p, p -> gson.fromJson(p.value().getObject(this.bucket.name()).toString(), this.elementClazz)));
 
         elements.forEach((queryRow, element) -> this.lifecycleWatcher.postLoad(element, queryRow));
-
         return new ArrayList<>(elements.values());
     }
 
@@ -143,7 +142,6 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         Validate.checkNotNull(element, "element cannot be null");
 
         String entityId = entityMetaContainer.extractId(element);
-
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, element);
         this.repository.remove(entityDocument);
     }

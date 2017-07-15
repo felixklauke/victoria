@@ -5,6 +5,8 @@ import com.couchbase.client.java.query.N1qlQueryRow;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 
 /**
+ * Default skeleton implementation for a lifecycle watcher.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class SkeletonLifecycleWatcher<ElementType> implements LifecycleWatcher<ElementType> {
