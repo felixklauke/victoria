@@ -30,7 +30,7 @@ public class RepositoryTest {
 
         testModelDAO.saveElement(testModel);
 
-        System.out.println(repository.get(uuid.toString(), TestModel.class));
+        System.out.println(testModelDAO.getElement(uuid.toString()));
 
         //System.out.println(bucket.get("9627c87d-ca91-4bb6-a953-d00ac9043913"));
     }
