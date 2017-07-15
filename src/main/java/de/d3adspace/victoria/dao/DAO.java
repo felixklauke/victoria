@@ -4,6 +4,7 @@ import com.couchbase.client.java.query.N1qlQuery;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Database access object managing basic CRUD operations on a couchbase repository.
@@ -57,6 +58,37 @@ public interface DAO<ElementType> {
      * @return The list of elements.
      */
     List<ElementType> getAllElements();
+
+    /**
+     * Get an element by its id.
+     *
+     * @param id       The entity id.
+     * @param consumer The consumer for the result.
+     */
+    void getElement(String id, Consumer<ElementType> consumer);
+
+    /**
+     * Get a single element by a n1ql query.
+     *
+     * @param query    The query.
+     * @param consumer The consumer for the result.
+     */
+    void getElement(N1qlQuery query, Consumer<ElementType> consumer);
+
+    /**
+     * Get a collection of elements by a n1ql query.
+     *
+     * @param n1qlQuery The query.
+     * @param consumer  The consumer.
+     */
+    void getElements(N1qlQuery n1qlQuery, Consumer<List<ElementType>> consumer);
+
+    /**
+     * Get all the available elements.
+     *
+     * @param consumer The consumer for the result.
+     */
+    void getAllElements(Consumer<List<ElementType>> consumer);
 
     /**
      * Remove an element by its id.

@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import de.d3adspace.victoria.container.EntityMetaContainer;
 import de.d3adspace.victoria.container.EntityMetaContainerFactory;
 import de.d3adspace.victoria.exception.VictoriaException;
+import de.d3adspace.victoria.executor.VictoriaThreadFactory;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 import de.d3adspace.victoria.proxy.ListProxy;
 import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
@@ -19,6 +20,9 @@ import de.d3adspace.victoria.validation.Validate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +58,11 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     private final Gson gson;
 
     /**
+     *
+     */
+    private final ExecutorService executorService;
+
+    /**
      * Life cycle processing.
      */
     private LifecycleWatcher<ElementType> lifecycleWatcher;
@@ -71,6 +80,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         this.repository = repository;
         this.gson = gson;
         this.lifecycleWatcher = new SkeletonLifecycleWatcher<>();
+        this.executorService = Executors.newFixedThreadPool(4, new VictoriaThreadFactory());
 
         entityMetaContainer.preloadMeta(elementClazz);
     }
@@ -91,9 +101,11 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         String entityId = entityMetaContainer.extractId(element);
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, expiry, element);
 
-        this.lifecycleWatcher.prePersist(element, entityDocument);
-        this.repository.upsert(entityDocument);
-        this.lifecycleWatcher.postPersist(element, entityDocument);
+        this.executorService.execute(() -> {
+            this.lifecycleWatcher.prePersist(element, entityDocument);
+            this.repository.upsert(entityDocument);
+            this.lifecycleWatcher.postPersist(element, entityDocument);
+        });
     }
 
     @Override
@@ -148,10 +160,30 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     }
 
     @Override
+    public void getElement(String id, Consumer<ElementType> consumer) {
+        this.executorService.execute(() -> consumer.accept(this.getElement(id)));
+    }
+
+    @Override
+    public void getElement(N1qlQuery query, Consumer<ElementType> consumer) {
+        this.executorService.execute(() -> consumer.accept(this.getElement(query)));
+    }
+
+    @Override
+    public void getElements(N1qlQuery n1qlQuery, Consumer<List<ElementType>> consumer) {
+        this.executorService.execute(() -> consumer.accept(this.getElements(n1qlQuery)));
+    }
+
+    @Override
+    public void getAllElements(Consumer<List<ElementType>> consumer) {
+        this.executorService.execute(() -> consumer.accept(this.getAllElements()));
+    }
+
+    @Override
     public void removeElement(String id) {
         Validate.checkNotNull(id, "id cannot be null");
 
-        repository.remove(id, elementClazz);
+        this.executorService.execute(() -> repository.remove(id, elementClazz));
     }
 
     @Override
@@ -160,7 +192,8 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
         String entityId = entityMetaContainer.extractId(element);
         EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, element);
-        this.repository.remove(entityDocument);
+
+        this.executorService.execute(() -> this.repository.remove(entityDocument));
     }
 
     @Override
