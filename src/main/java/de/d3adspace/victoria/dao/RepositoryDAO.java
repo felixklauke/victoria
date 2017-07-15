@@ -6,11 +6,10 @@ import com.couchbase.client.java.query.N1qlQuery;
 import com.couchbase.client.java.query.N1qlQueryRow;
 import com.couchbase.client.java.repository.Repository;
 import com.google.gson.Gson;
-import de.d3adspace.victoria.annotation.EntityTTL;
+import de.d3adspace.victoria.container.EntityMetaContainer;
+import de.d3adspace.victoria.container.EntityMetaContainerFactory;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 import de.d3adspace.victoria.lifecycle.skeleton.SkeletonLifecycleWatcher;
-import de.d3adspace.victoria.meta.EntityMetaContainer;
-import de.d3adspace.victoria.meta.EntityMetaContainerFactory;
 import de.d3adspace.victoria.validation.Validate;
 
 import java.util.ArrayList;
@@ -77,10 +76,8 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         Validate.checkNotNull(element, "element cannot be null");
 
         String entityId = entityMetaContainer.extractId(element);
-        EntityTTL entityTTL = entityMetaContainer.getEntityTTL(element);
-        int expiry = entityTTL == null ? 0 : entityTTL.value();
 
-        EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, expiry, element);
+        EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, entityMetaContainer.getEntityTTL(element), element);
 
         this.lifecycleWatcher.prePersist(element, entityDocument);
         this.repository.upsert(entityDocument);

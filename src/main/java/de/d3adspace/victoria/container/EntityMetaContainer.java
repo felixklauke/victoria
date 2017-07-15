@@ -1,13 +1,11 @@
-package de.d3adspace.victoria.meta;
-
-import de.d3adspace.victoria.annotation.EntityTTL;
+package de.d3adspace.victoria.container;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
 public interface EntityMetaContainer {
 
-    EntityTTL getEntityTTL(Object element);
+    int getEntityTTL(Object element);
 
     String extractId(Object element);
 

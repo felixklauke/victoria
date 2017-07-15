@@ -55,7 +55,7 @@ public interface Victoria {
     /**
      * Create a basic couchbase repository like described in <a href="http://docs.couchbase.com/sdk-api/couchbase-java-client-2.2.8/com/couchbase/client/java/repository/package-summary.html">Couchbase Repository</a>
      * but with a modified entity converter that uses GSON serialization instead of plain old java reflections based
-     * property meta data for entity serialization. You can read more about the default implementation at
+     * property container data for entity serialization. You can read more about the default implementation at
      * <a href="https://github.com/couchbase/couchbase-java-client/tree/master/src/main/java/com/couchbase/client/java/repository"></a>.
      * <p>
      * To achieve that victoria has to create a custom EntityConverter {@link com.couchbase.client.java.repository.mapping.EntityConverter}

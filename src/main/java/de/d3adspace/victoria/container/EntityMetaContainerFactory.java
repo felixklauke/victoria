@@ -1,4 +1,4 @@
-package de.d3adspace.victoria.meta;
+package de.d3adspace.victoria.container;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
