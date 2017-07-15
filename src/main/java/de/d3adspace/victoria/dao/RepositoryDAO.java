@@ -163,7 +163,11 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         return this.repository.exists(entityDocument);
     }
 
-    void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {
+    public LifecycleWatcher<ElementType> getLifecycleWatcher() {
+        return lifecycleWatcher;
+    }
+
+    public void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {
         this.lifecycleWatcher = lifecycleWatcher;
     }
 }
