@@ -1,4 +1,4 @@
-package de.d3adspace.victoria.lifecycle.skeleton;
+package de.d3adspace.victoria.skeleton;
 
 import com.couchbase.client.java.document.EntityDocument;
 import com.couchbase.client.java.query.N1qlQueryRow;

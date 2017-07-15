@@ -9,7 +9,7 @@ import com.couchbase.client.java.query.N1qlQueryResult;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class CouchbaseN1qlProxy {
-
+    
     private static final String GET_ALL_DOCUMENTS_BY_ID_PREFIX = "SELECT * FROM $bucket WHERE Meta($bucket).id LIKE $prefix%";
     private static final String GET_ALL_DOCUMENTS_BY_TYPE = "SELECT * FROM $bucket WHERE type=$entityType";
 

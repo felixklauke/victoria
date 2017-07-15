@@ -11,9 +11,9 @@ import de.d3adspace.victoria.container.EntityMetaContainer;
 import de.d3adspace.victoria.container.EntityMetaContainerFactory;
 import de.d3adspace.victoria.exception.VictoriaException;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
-import de.d3adspace.victoria.lifecycle.skeleton.SkeletonLifecycleWatcher;
 import de.d3adspace.victoria.proxy.ListProxy;
 import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
+import de.d3adspace.victoria.skeleton.SkeletonLifecycleWatcher;
 import de.d3adspace.victoria.validation.Validate;
 
 import java.util.ArrayList;

@@ -4,6 +4,7 @@ import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
 import com.couchbase.client.java.repository.Repository;
 import com.google.gson.Gson;
+import de.d3adspace.victoria.conversion.ConversionInterceptor;
 import de.d3adspace.victoria.dao.DAO;
 
 /**
@@ -72,6 +73,8 @@ public interface Victoria {
      */
     Repository createRepository(Bucket bucket, Gson gson);
 
+    Repository createRepository(Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor);
+
     /**
      * Create a database access object that pulls out the basic crud operations out off a repository.
      *
@@ -81,6 +84,8 @@ public interface Victoria {
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket);
+
+    <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, ConversionInterceptor conversionInterceptor);
 
     /**
      * Create a dao by all its necessary data.
@@ -93,6 +98,8 @@ public interface Victoria {
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson);
 
+    <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor);
+
     /**
      * Create a database access object based on a couchbase cluster.
      *
@@ -103,6 +110,8 @@ public interface Victoria {
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster);
 
+    <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, ConversionInterceptor conversionInterceptor);
+
     /**
      * Create a database access object based on a couchbase cluster.
      *
@@ -112,4 +121,6 @@ public interface Victoria {
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson);
+
+    <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson, ConversionInterceptor conversionInterceptor);
 }

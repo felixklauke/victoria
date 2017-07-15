@@ -7,10 +7,12 @@ import com.couchbase.client.java.repository.Repository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.d3adspace.victoria.annotation.EntityBucket;
+import de.d3adspace.victoria.conversion.ConversionInterceptor;
 import de.d3adspace.victoria.converter.GSONEntityConverter;
 import de.d3adspace.victoria.dao.DAO;
 import de.d3adspace.victoria.dao.DAOFactory;
 import de.d3adspace.victoria.injector.ConverterInjector;
+import de.d3adspace.victoria.skeleton.SkeletonConversionInterceptor;
 import de.d3adspace.victoria.validation.Validate;
 
 /**
@@ -48,21 +50,36 @@ public class SimpleVictoria implements Victoria {
 
     @Override
     public Repository createRepository(Bucket bucket, Gson gson) {
+        return createRepository(bucket, gson, new SkeletonConversionInterceptor());
+    }
+
+    @Override
+    public Repository createRepository(Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor) {
         Validate.checkNotNull(bucket, "bucket can not be null.");
         Validate.checkNotNull(gson, "gson can not be null.");
 
         Repository repository = new CouchbaseRepository(bucket, bucket.environment());
-        this.converterInjector.injectConverter(repository, new GSONEntityConverter(gson));
+        this.converterInjector.injectConverter(repository, new GSONEntityConverter(gson, conversionInterceptor));
         return repository;
     }
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket) {
-        return createDAO(elementClazz, bucket, DEFAULT_GSON);
+        return createDAO(elementClazz, bucket, new SkeletonConversionInterceptor());
+    }
+
+    @Override
+    public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, ConversionInterceptor conversionInterceptor) {
+        return createDAO(elementClazz, bucket, DEFAULT_GSON, conversionInterceptor);
     }
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson) {
+        return createDAO(elementClazz, bucket, gson, new SkeletonConversionInterceptor());
+    }
+
+    @Override
+    public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor) {
         Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
         Validate.checkNotNull(bucket, "Bucket cluster can not be null.");
         Validate.checkNotNull(gson, "gson can not be null.");
@@ -72,6 +89,11 @@ public class SimpleVictoria implements Victoria {
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster) {
+        return createDAO(elementClazz, couchbaseCluster, DEFAULT_GSON);
+    }
+
+    @Override
+    public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, ConversionInterceptor conversionInterceptor) {
         Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
         Validate.checkNotNull(couchbaseCluster, "Couchbase cluster can not be null.");
         Validate.checkAnnotation(elementClazz, EntityBucket.class, elementClazz + " needs @EntityBucket annotation.");
@@ -81,6 +103,11 @@ public class SimpleVictoria implements Victoria {
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson) {
+        return createDAO(elementClazz, couchbaseCluster, gson, new SkeletonConversionInterceptor());
+    }
+
+    @Override
+    public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson, ConversionInterceptor conversionInterceptor) {
         Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
         Validate.checkNotNull(couchbaseCluster, "Couchbase cluster can not be null.");
         Validate.checkNotNull(gson, "gson cluster can not be null.");
