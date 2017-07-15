@@ -124,7 +124,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     public List<ElementType> getElements(N1qlQuery n1qlQuery) {
         Validate.checkNotNull(n1qlQuery, "n1qlQuery cannot be null");
 
-        N1qlQueryResult result = CouchbaseN1qlProxy.getAllElementsByQuery(this.bucket, n1qlQuery);
+        N1qlQueryResult result = CouchbaseN1qlProxy.executeQuery(this.bucket, n1qlQuery);
         return this.getElementsFromQueryResult(result);
     }
 

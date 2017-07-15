@@ -6,6 +6,7 @@ import com.couchbase.client.java.repository.Repository;
 import com.google.gson.Gson;
 import de.d3adspace.victoria.conversion.ConversionInterceptor;
 import de.d3adspace.victoria.dao.DAO;
+import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
 
 /**
  * Basic victoria interface containing all main functions.
@@ -30,6 +31,9 @@ import de.d3adspace.victoria.dao.DAO;
  * </pre>
  *
  * It is possible to listen for entity conversion using an {@link ConversionInterceptor}
+ *
+ * All Daos will record their stats in a VictoriaAnalytics instance provided by
+ * {@link CouchbaseN1qlProxy#getVictoriaAnalytics()}
  *
  * Remember: DAOs will also use an internal instance of a gson modified couchbase repository.
  *
