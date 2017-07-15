@@ -76,7 +76,17 @@ public class SimpleVictoria implements Victoria {
         Validate.checkNotNull(couchbaseCluster, "Couchbase cluster can not be null.");
         Validate.checkAnnotation(elementClazz, EntityBucket.class, elementClazz + " needs @EntityBucket annotation.");
 
+        return createDAO(elementClazz, couchbaseCluster, DEFAULT_GSON);
+    }
+
+    @Override
+    public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson) {
+        Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
+        Validate.checkNotNull(couchbaseCluster, "Couchbase cluster can not be null.");
+        Validate.checkNotNull(gson, "gson cluster can not be null.");
+        Validate.checkAnnotation(elementClazz, EntityBucket.class, elementClazz + " needs @EntityBucket annotation.");
+
         EntityBucket entityBucket = elementClazz.getAnnotation(EntityBucket.class);
-        return createDAO(elementClazz, couchbaseCluster.openBucket(entityBucket.value()));
+        return createDAO(elementClazz, couchbaseCluster.openBucket(entityBucket.value()), gson);
     }
 }

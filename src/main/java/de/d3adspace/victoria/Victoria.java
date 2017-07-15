@@ -102,4 +102,14 @@ public interface Victoria {
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster);
+
+    /**
+     * Create a database access object based on a couchbase cluster.
+     *
+     * @param elementClazz     The class of the entity you're persisting.
+     * @param couchbaseCluster The cluster whose bucket you want to use.
+     * @param <ElementType>    The type of the entity you're persisting.
+     * @return The DAO.
+     */
+    <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson);
 }
