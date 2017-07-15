@@ -19,6 +19,14 @@ public interface DAO<ElementType> {
     void saveElement(ElementType element);
 
     /**
+     * Persist an entity.
+     *
+     * @param element    The element.
+     * @param timeToLive The time an entity has.
+     */
+    void saveElement(ElementType element, int timeToLive);
+
+    /**
      * Get an element by its id.
      *
      * @param id The entity id.
@@ -26,8 +34,20 @@ public interface DAO<ElementType> {
      */
     ElementType getElement(String id);
 
+    /**
+     * Get a single element by a n1ql query.
+     *
+     * @param query The query.
+     * @return The lement.
+     */
     ElementType getElement(N1qlQuery query);
 
+    /**
+     * Get a collection of elements by a n1ql query.
+     *
+     * @param n1qlQuery The query.
+     * @return The list of elements.
+     */
     List<ElementType> getElements(N1qlQuery n1qlQuery);
 
     /**

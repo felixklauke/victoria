@@ -75,9 +75,17 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     public void saveElement(ElementType element) {
         Validate.checkNotNull(element, "element cannot be null");
 
-        String entityId = entityMetaContainer.extractId(element);
+        int expiry = entityMetaContainer.getEntityTTL(element);
+        this.saveElement(element, expiry);
+    }
 
-        EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, entityMetaContainer.getEntityTTL(element), element);
+    @Override
+    public void saveElement(ElementType element, int expiry) {
+        Validate.checkNotNull(element, "element cannot be null");
+        Validate.checkNotNull(expiry, "expiry cannot be null");
+
+        String entityId = entityMetaContainer.extractId(element);
+        EntityDocument<ElementType> entityDocument = EntityDocument.create(entityId, expiry, element);
 
         this.lifecycleWatcher.prePersist(element, entityDocument);
         this.repository.upsert(entityDocument);
