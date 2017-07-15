@@ -23,6 +23,8 @@ public interface EntityMetaContainer {
      */
     String extractId(Object element);
 
+    String getIdPrefix(Class elementCLazz);
+
     /**
      * Preload entity meta data.
      *

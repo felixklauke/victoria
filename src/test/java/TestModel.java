@@ -12,7 +12,7 @@ import java.util.UUID;
 @EntityWatcher(TestModelWatcher.class)
 public class TestModel {
 
-    @EntityId
+    @EntityId(prefix = "test:")
     private final UUID uniqueId;
     private final Map<String, String> metaDataContainer;
 

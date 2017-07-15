@@ -43,6 +43,11 @@ public class SimpleEntityMetaContainer implements EntityMetaContainer {
     }
 
     @Override
+    public String getIdPrefix(Class elementClazz) {
+        return this.entityMeta.get(elementClazz).getIdPrefix();
+    }
+
+    @Override
     public void preloadMeta(Class elementClazz) {
         EntityMeta entityMeta = EntityMetaFactory.createEntityMeta(elementClazz);
         this.entityMeta.put(elementClazz, entityMeta);

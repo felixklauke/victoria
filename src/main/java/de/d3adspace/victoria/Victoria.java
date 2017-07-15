@@ -22,7 +22,7 @@ import de.d3adspace.victoria.dao.DAO;
  *          {@literal @}{@link de.d3adspace.victoria.annotation.EntityWatcher}(Watcher.class)
  *          {@literal @}{@link de.d3adspace.victoria.annotation.EntityBucket}("high")
  *          public class Example {
- *              {@literal @}{@link de.d3adspace.victoria.annotation.EntityId}
+ *              {@literal @}{@link de.d3adspace.victoria.annotation.EntityId}(prefix = "test:")
  *              private UUID uniqueId;
  *          }
  *     </code>

@@ -3,6 +3,7 @@ package de.d3adspace.victoria.dao;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.EntityDocument;
 import com.couchbase.client.java.query.N1qlQuery;
+import com.couchbase.client.java.query.N1qlQueryResult;
 import com.couchbase.client.java.query.N1qlQueryRow;
 import com.couchbase.client.java.repository.Repository;
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import de.d3adspace.victoria.container.EntityMetaContainer;
 import de.d3adspace.victoria.container.EntityMetaContainerFactory;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 import de.d3adspace.victoria.lifecycle.skeleton.SkeletonLifecycleWatcher;
+import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
 import de.d3adspace.victoria.validation.Validate;
 
 import java.util.ArrayList;
@@ -120,14 +122,15 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     public List<ElementType> getElements(N1qlQuery n1qlQuery) {
         Validate.checkNotNull(n1qlQuery, "n1qlQuery cannot be null");
 
-        List<N1qlQueryRow> result = this.bucket.query(n1qlQuery).allRows();
-        if (result.size() == 0) return new ArrayList<>();
+        N1qlQueryResult result = CouchbaseN1qlProxy.getAllElementsByQuery(this.bucket, n1qlQuery);
+        return this.getElementsFromQueryResult(result);
+    }
 
-        Map<N1qlQueryRow, ElementType> elements = result.stream()
-                .collect(Collectors.toMap(p -> p, p -> gson.fromJson(p.value().getObject(this.bucket.name()).toString(), this.elementClazz)));
-
-        elements.forEach((queryRow, element) -> this.lifecycleWatcher.postLoad(element, queryRow));
-        return new ArrayList<>(elements.values());
+    @Override
+    public List<ElementType> getAllElements() {
+        String prefix = entityMetaContainer.getIdPrefix(this.elementClazz);
+        N1qlQueryResult result = CouchbaseN1qlProxy.getAllElementsByIdPrefix(this.bucket, prefix);
+        return getElementsFromQueryResult(result);
     }
 
     @Override
@@ -163,11 +166,24 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         return this.repository.exists(entityDocument);
     }
 
+    @Override
     public LifecycleWatcher<ElementType> getLifecycleWatcher() {
         return lifecycleWatcher;
     }
 
+    @Override
     public void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {
         this.lifecycleWatcher = lifecycleWatcher;
+    }
+
+    private List<ElementType> getElementsFromQueryResult(N1qlQueryResult result) {
+        List<N1qlQueryRow> rows = result.allRows();
+        if (rows.size() == 0) return new ArrayList<>();
+
+        Map<N1qlQueryRow, ElementType> elements = rows.stream()
+                .collect(Collectors.toMap(p -> p, p -> gson.fromJson(p.value().getObject(this.bucket.name()).toString(), this.elementClazz)));
+
+        elements.forEach((queryRow, element) -> this.lifecycleWatcher.postLoad(element, queryRow));
+        return new ArrayList<>(elements.values());
     }
 }

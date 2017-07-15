@@ -1,6 +1,7 @@
 package de.d3adspace.victoria.dao;
 
 import com.couchbase.client.java.query.N1qlQuery;
+import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 
 import java.util.List;
 
@@ -51,6 +52,13 @@ public interface DAO<ElementType> {
     List<ElementType> getElements(N1qlQuery n1qlQuery);
 
     /**
+     * Get all the available elements.
+     *
+     * @return The list of elements.
+     */
+    List<ElementType> getAllElements();
+
+    /**
      * Remove an element by its id.
      *
      * @param id The id.
@@ -79,4 +87,8 @@ public interface DAO<ElementType> {
      * @return If there is a database entry.
      */
     boolean exists(ElementType element);
+
+    LifecycleWatcher<ElementType> getLifecycleWatcher();
+
+    void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher);
 }

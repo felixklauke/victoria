@@ -5,12 +5,22 @@ import com.couchbase.client.java.query.N1qlQueryRow;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 
 /**
+ * Used to decorate a life cycle watcher. Happy decorating.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class LifeCycleWatcherDecorator<ElementType> implements LifecycleWatcher<ElementType> {
 
+    /**
+     * Underlying root lifecyclewatcher.
+     */
     private final LifecycleWatcher<ElementType> lifecycleWatcher;
 
+    /**
+     * Create a new decorator by its handle.
+     *
+     * @param lifecycleWatcher The underlying root watcher.
+     */
     public LifeCycleWatcherDecorator(LifecycleWatcher<ElementType> lifecycleWatcher) {
         this.lifecycleWatcher = lifecycleWatcher;
     }
