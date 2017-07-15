@@ -30,6 +30,6 @@ public class EntityMetaFactory {
             }
         }
 
-        return new SimpleEntityMeta(entityTTL, idField);
+        return new SimpleEntityMeta(entityTTL, idField, idPrefix);
     }
 }

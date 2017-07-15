@@ -22,4 +22,6 @@ public interface EntityMeta {
      * @return The field.
      */
     Field getIdField();
+
+    String getIdPrefix();
 }

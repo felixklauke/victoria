@@ -22,14 +22,20 @@ public class SimpleEntityMeta implements EntityMeta {
     private final Field idField;
 
     /**
+     * The prefix to prepend before all ids.
+     */
+    private final String idPrefix;
+
+    /**
      * Create a new meta data holder by all its data.
-     *
      * @param entityTTL The ttl.
      * @param idField   The field.
+     * @param idPrefix The prefix og the id.
      */
-    SimpleEntityMeta(EntityTTL entityTTL, Field idField) {
+    SimpleEntityMeta(EntityTTL entityTTL, Field idField, String idPrefix) {
         this.entityTTL = entityTTL;
         this.idField = idField;
+        this.idPrefix = idPrefix;
     }
 
     @Override
@@ -40,5 +46,10 @@ public class SimpleEntityMeta implements EntityMeta {
     @Override
     public Field getIdField() {
         return idField;
+    }
+
+    @Override
+    public String getIdPrefix() {
+        return idPrefix;
     }
 }

@@ -33,7 +33,8 @@ public class SimpleEntityMetaContainer implements EntityMetaContainer {
     @Override
     public String extractId(Object element) {
         try {
-            return String.valueOf(this.entityMeta.get(element.getClass()).getIdField().get(element));
+            EntityMeta entityMeta = this.entityMeta.get(element.getClass());
+            return entityMeta.getIdPrefix() + entityMeta.getIdField().get(element);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
