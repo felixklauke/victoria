@@ -50,6 +50,9 @@ public class SimpleVictoria implements Victoria {
 
     @Override
     public Repository createRepository(Bucket bucket, Gson gson) {
+        Validate.checkNotNull(bucket, "bucket can not be null.");
+        Validate.checkNotNull(gson, "gson can not be null.");
+
         return createRepository(bucket, gson, new SkeletonConversionInterceptor());
     }
 
@@ -57,6 +60,7 @@ public class SimpleVictoria implements Victoria {
     public Repository createRepository(Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor) {
         Validate.checkNotNull(bucket, "bucket can not be null.");
         Validate.checkNotNull(gson, "gson can not be null.");
+        Validate.checkNotNull(conversionInterceptor, "conversionInterceptor can not be null.");
 
         Repository repository = new CouchbaseRepository(bucket, bucket.environment());
         this.converterInjector.injectConverter(repository, new GSONEntityConverter(gson, conversionInterceptor));
@@ -65,16 +69,27 @@ public class SimpleVictoria implements Victoria {
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket) {
+        Validate.checkNotNull(elementClazz, "elementClazz can not be null.");
+        Validate.checkNotNull(bucket, "bucket can not be null.");
+
         return createDAO(elementClazz, bucket, new SkeletonConversionInterceptor());
     }
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, ConversionInterceptor conversionInterceptor) {
+        Validate.checkNotNull(elementClazz, "elementClazz can not be null.");
+        Validate.checkNotNull(bucket, "bucket can not be null.");
+        Validate.checkNotNull(conversionInterceptor, "conversionInterceptor can not be null.");
+
         return createDAO(elementClazz, bucket, DEFAULT_GSON, conversionInterceptor);
     }
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson) {
+        Validate.checkNotNull(elementClazz, "elementClazz can not be null.");
+        Validate.checkNotNull(bucket, "bucket can not be null.");
+        Validate.checkNotNull(gson, "gson can not be null.");
+
         return createDAO(elementClazz, bucket, gson, new SkeletonConversionInterceptor());
     }
 
@@ -83,12 +98,16 @@ public class SimpleVictoria implements Victoria {
         Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
         Validate.checkNotNull(bucket, "Bucket cluster can not be null.");
         Validate.checkNotNull(gson, "gson can not be null.");
+        Validate.checkNotNull(conversionInterceptor, "conversionInterceptor can not be null.");
 
         return DAOFactory.createDAO(elementClazz, createRepository(bucket), bucket, gson);
     }
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster) {
+        Validate.checkNotNull(elementClazz, "elementClazz can not be null.");
+        Validate.checkNotNull(couchbaseCluster, "couchbaseCluster can not be null.");
+
         return createDAO(elementClazz, couchbaseCluster, DEFAULT_GSON);
     }
 
@@ -96,6 +115,7 @@ public class SimpleVictoria implements Victoria {
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, ConversionInterceptor conversionInterceptor) {
         Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
         Validate.checkNotNull(couchbaseCluster, "Couchbase cluster can not be null.");
+        Validate.checkNotNull(conversionInterceptor, "conversionInterceptor can not be null.");
         Validate.checkAnnotation(elementClazz, EntityBucket.class, elementClazz + " needs @EntityBucket annotation.");
 
         return createDAO(elementClazz, couchbaseCluster, DEFAULT_GSON);
@@ -103,6 +123,10 @@ public class SimpleVictoria implements Victoria {
 
     @Override
     public <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson) {
+        Validate.checkNotNull(elementClazz, "elementClazz can not be null.");
+        Validate.checkNotNull(couchbaseCluster, "couchbaseCluster can not be null.");
+        Validate.checkNotNull(gson, "gson can not be null.");
+
         return createDAO(elementClazz, couchbaseCluster, gson, new SkeletonConversionInterceptor());
     }
 
@@ -111,6 +135,7 @@ public class SimpleVictoria implements Victoria {
         Validate.checkNotNull(elementClazz, "Element clazz can not be null.");
         Validate.checkNotNull(couchbaseCluster, "Couchbase cluster can not be null.");
         Validate.checkNotNull(gson, "gson cluster can not be null.");
+        Validate.checkNotNull(conversionInterceptor, "conversionInterceptor can not be null.");
         Validate.checkAnnotation(elementClazz, EntityBucket.class, elementClazz + " needs @EntityBucket annotation.");
 
         EntityBucket entityBucket = elementClazz.getAnnotation(EntityBucket.class);
