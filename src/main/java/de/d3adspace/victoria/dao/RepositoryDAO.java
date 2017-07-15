@@ -11,6 +11,7 @@ import de.d3adspace.victoria.container.EntityMetaContainer;
 import de.d3adspace.victoria.container.EntityMetaContainerFactory;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
 import de.d3adspace.victoria.lifecycle.skeleton.SkeletonLifecycleWatcher;
+import de.d3adspace.victoria.proxy.ListProxy;
 import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
 import de.d3adspace.victoria.validation.Validate;
 
@@ -175,6 +176,11 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     public void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {
         this.lifecycleWatcher = lifecycleWatcher;
     }
+
+    @Override
+    public List<ElementType> getListProxy(String listDocumentName) {
+        return new ListProxy<>(listDocumentName, this.bucket);
+    } 
 
     private List<ElementType> getElementsFromQueryResult(N1qlQueryResult result) {
         List<N1qlQueryRow> rows = result.allRows();
