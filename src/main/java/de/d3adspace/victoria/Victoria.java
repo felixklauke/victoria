@@ -13,7 +13,22 @@ import de.d3adspace.victoria.dao.DAO;
  *
  * Victoria's main functionality should be to make the database access of couchbase's more clean and easier for the
  * developer mainly by enhancing its default implementations of entity repositories by using gson and furthermore
- * providing interfaces to create custom database access objects aka DAO {@link de.d3adspace.victoria.dao.DAO}.
+ * providing interfaces to create custom database access objects aka DAO {@link de.d3adspace.victoria.dao.DAO}. You can
+ * handle entity persistence with a model class and some victoria annotations:
+ *
+ * <pre>
+ *     <code>
+ *          {@literal @}{@link de.d3adspace.victoria.annotation.EntityTTL}(20)
+ *          {@literal @}{@link de.d3adspace.victoria.annotation.EntityWatcher}(Watcher.class)
+ *          {@literal @}{@link de.d3adspace.victoria.annotation.EntityBucket}("high")
+ *          public class Example {
+ *              {@literal @}{@link de.d3adspace.victoria.annotation.EntityId}
+ *              private UUID uniqueId;
+ *          }
+ *     </code>
+ * </pre>
+ *
+ * Remember: DAOs will also use an internal instance of a gson modified couchbase repository.
  *
  * The secondary goal is to hide the couchbase database access layer behind the proxy pattern and take default java
  * data structures (List, Set, Map, Queue, Stack) and add a backend handler that will persist them in a couchbase
@@ -67,6 +82,15 @@ public interface Victoria {
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket);
 
+    /**
+     * Create a dao by all its necessary data.
+     *
+     * @param elementClazz  The class of the element you're persisting.
+     * @param bucket        The bucket the entities are persisted in.
+     * @param gson          The gson instance,
+     * @param <ElementType> The type of the entity you're persisting.
+     * @return The DAO.
+     */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson);
 
     /**
