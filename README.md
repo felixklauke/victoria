@@ -95,6 +95,41 @@ public class BankAccount {
 
 You can provide the class of a lifecycle watcher. Take a look at lifecycle processing.
 
+# Example Entity
+```java
+@EntityTTL(20)
+@EntityBucket("high")
+@EntityType("testModel")
+@EntityWatcher(TestModelWatcher.class)
+public class TestModel {
+
+    @EntityId(prefix = "test:")
+    private final UUID uniqueId;
+    private final Map<String, String> metaDataContainer;
+
+    public TestModel(UUID uniqueId, Map<String, String> metaDataContainer) {
+        this.uniqueId = uniqueId;
+        this.metaDataContainer = metaDataContainer;
+    }
+
+    public UUID getUniqueId() {
+        return uniqueId;
+    }
+
+    public Map<String, String> getMetaDataContainer() {
+        return metaDataContainer;
+    }
+
+    @Override
+    public String toString() {
+        return "TestModel{" +
+                "uniqueId=" + uniqueId +
+                ", metaDataContainer=" + metaDataContainer +
+                '}';
+    }
+}
+```
+
 # Lifecycle processing
 You can implement the LifecycleWatcher<ElementType> to watch your entities lifecycle. Remember there
 are two ways and entity can be loaded: Via ID earch or via N1ql. Take care of handle both. 
