@@ -100,7 +100,7 @@ public class SimpleVictoria implements Victoria {
         Validate.checkNotNull(gson, "gson can not be null.");
         Validate.checkNotNull(conversionInterceptor, "conversionInterceptor can not be null.");
 
-        return DAOFactory.createDAO(elementClazz, createRepository(bucket), bucket, gson);
+        return DAOFactory.createDAO(elementClazz, createRepository(bucket, gson, conversionInterceptor), bucket, gson);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class SimpleVictoria implements Victoria {
         Validate.checkNotNull(conversionInterceptor, "conversionInterceptor can not be null.");
         Validate.checkAnnotation(elementClazz, EntityBucket.class, elementClazz + " needs @EntityBucket annotation.");
 
-        return createDAO(elementClazz, couchbaseCluster, DEFAULT_GSON);
+        return createDAO(elementClazz, couchbaseCluster, DEFAULT_GSON, conversionInterceptor);
     }
 
     @Override
@@ -139,6 +139,6 @@ public class SimpleVictoria implements Victoria {
         Validate.checkAnnotation(elementClazz, EntityBucket.class, elementClazz + " needs @EntityBucket annotation.");
 
         EntityBucket entityBucket = elementClazz.getAnnotation(EntityBucket.class);
-        return createDAO(elementClazz, couchbaseCluster.openBucket(entityBucket.value()), gson);
+        return createDAO(elementClazz, couchbaseCluster.openBucket(entityBucket.value()), gson, conversionInterceptor);
     }
 }

@@ -113,7 +113,8 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
         Validate.checkNotNull(id, "id cannot be null");
 
         EntityDocument<ElementType> entityDocument = repository.get(id, elementClazz);
-        ElementType element = entityDocument.content();
+
+        ElementType element = entityDocument == null ? null : entityDocument.content();
 
         this.lifecycleWatcher.postLoad(element, entityDocument);
         return element;
