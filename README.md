@@ -188,7 +188,7 @@ Map<String, Model> map = ProxiedDatastructures.createMap(databaseDocumentName, b
 
 ### Queue
 ```java
-Queue<TestModel> queue = ProxiedDatastructures.createQueue("players", bucket);
+Queue<TestModel> queue = ProxiedDatastructures.createQueue(databaseDocumentName, bucket);
 ```
 
 CAUTION: We currently dont hold a lock on proxied documents in a database, so dont modify a document from other sources.
