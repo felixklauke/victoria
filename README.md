@@ -1,50 +1,137 @@
 # Victoria
 
 Experimental replacement for couchbase's default entity converter embedded repository implementation using GSON instead
-couchbase's dumb reflection based property meta data implementation.
+couchbase's dumb reflection based property meta data implementation. Furthermore vitoria provides
+a highly advanced database access object layer which you can use to simplify couchbase's java driver 
+API to a human understandable layer with a lot of useful features like:
+- Custom entity conversion
+- Entity Lifecycle processing
+- Managing arbitrary database entities via annotations
+- Conversion interception to monitor entity serialization
+- Proxied instances of javas main default data structures that will synchronize themselves with a document in your database:
+    - Queue
+    - List
+    - Map
+    - (Iterator)
+- Simple analytics to enhance your database analysis
+- DAOs with a bunch of features to manage your data fast and easy
 
-# Example
+# Basic Usage
 
-_Model:_
+### Plain old repository
 ```java
-import de.d3adspace.victoria.annotation.EntityId;
-import de.d3adspace.victoria.annotation.EntityTTL;
-import de.d3adspace.victoria.annotation.EntityWatcher;
+Victoria victoria = VictoriaFactory.createVictoria();
+        
+// Create a repository by a couchbase bucket
+victoria.createRepository(bucket);
+        
+// You want to use your own gson instance?
+victoria.createRepository(bucket, gson);
+        
+// Intercept entity conversion
+victoria.createRepository(bucket, gson, conversionInterceptor);
+```
 
-import java.util.Map;
-import java.util.UUID;
+### DAO
+```java
+Victoria victoria = VictoriaFactory.createVictoria();
+        
+// Create a basic dao
+victoria.createDAO(elementClazz, bucket);
+        
+// Create a basic dao but provide the bucket via cluster and entity annotation
+victoria.createDAO(elementClazz, couchbaseCluster);
+        
+// Create a basic dao but provide your own gson instance
+victoria.createDAO(elementClazz, bucket, gson);
+        
+// Create a basic dao and intercept entity conversion
+victoria.createDAO(elementClazz, bucket, gson, conversionInterceptor);
+```
 
-/**
- * @author Felix 'SasukeKawaii' Klauke
- */
-@EntityTTL(20)
-@EntityWatcher(TestModelWatcher.class)
-public class TestModel {
+# Annotations for DAO Entities
 
-    @EntityId
-    private final UUID uniqueId;
-    private final Map<String, String> metaDataContainer;
+### EntityBucket
+```java 
+@EntityBucket( "bucketName" ) 
+public class PlayerModel {
+```
 
-    public TestModel(UUID uniqueId, Map<String, String> metaDataContainer) {
-        this.uniqueId = uniqueId;
-        this.metaDataContainer = metaDataContainer;
-    }
+You can provide the bucket of an entity via the `@EntityBucket` annotation.
 
-    public UUID getUniqueId() {
-        return uniqueId;
-    }
+### EntityType
+```java 
+@EntityType( "player" ) 
+public class PlayerModel {
+```
 
-    public Map<String, String> getMetaDataContainer() {
-        return metaDataContainer;
-    }
+When you work with an indexed bucket you should ensure youre using an index on the `type` field. 
+The given type will be serialized in the JSON Version of your entity but won't be visible in your entity.
 
-    @Override
-    public String toString() {
-        return "TestModel{" +
-                "uniqueId=" + uniqueId +
-                ", metaDataContainer=" + metaDataContainer +
-                '}';
-    }
+### EntityId
+```java 
+@EntityId( prefix = "player::" )
+private final UUID uniqueId;
+```
+
+One field of your entity should provide the id of the future document in the database. It is recommended
+that you prepend a prefix to mark the source application of your entity.
+
+### EntityTTL
+```java 
+@EntityTTL( 20 )
+public class PlayerModel {
+```
+
+You can give your database document a time to live in seconds via this annotation. Remember that this
+will take the ttl in seconds when your TTL is under 30 days. You will have to use an unix timestamp if
+your ttl should be higher than 30 days. 
+
+### EntityWatcher
+```java 
+@EntityWatcher( BankAccountWatcher.class )
+public class BankAccount {
+```
+
+You can provide the class of a lifecycle watcher. Take a look at lifecycle processing.
+
+# Lifecycle processing
+You can implement the LifecycleWatcher<ElementType> to watch your entities lifecycle. Remember there
+are two ways and entity can be loaded: Via ID earch or via N1ql. Take care of handle both. 
+```java
+public interface LifecycleWatcher<ElementType> {
+
+    /**
+     * Called before the entityDocument will be persisted in a bucket.
+     */
+    void prePersist(ElementType element, EntityDocument<ElementType> entityDocument);
+
+    /**
+     * Called after an element was loaded by its primary ID.
+     */
+    void postLoad(ElementType element, EntityDocument<ElementType> entityDocument);
+
+    /**
+     * Called after an element was loaded with a n1ql query.
+     */
+    void postLoad(ElementType element, N1qlQueryRow row);
+
+    /**
+     * Called after an entity was persisted in a bucket.
+     */
+    void postPersist(ElementType element, EntityDocument<ElementType> entityDocument);
 }
 ```
 
+# Conversion Interception
+If you want to change the behavior of the EntityConverter without writing your own
+converter use a conversion interceptor that will be called whenever an entity is 
+serialized or deserialized: 
+```java
+public interface ConversionInterceptor {
+
+    void onEntityDeserialization(EntityDocument<Object> entityDocument);
+
+    void onEntitySerialization(JsonDocument jsonDocument, Class entityClass);
+}
+```

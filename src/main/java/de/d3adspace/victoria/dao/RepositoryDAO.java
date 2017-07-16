@@ -58,7 +58,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
     private final Gson gson;
 
     /**
-     *
+     * The executor for async operations
      */
     private final ExecutorService executorService;
 
