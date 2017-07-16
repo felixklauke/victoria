@@ -19,7 +19,7 @@ public class ListProxy<ElementType> extends AbstractList<ElementType> {
     private final Bucket bucket;
     private final String listName;
 
-    public ListProxy(String listName, Bucket bucket) {
+    ListProxy(String listName, Bucket bucket) {
         this.listName = listName;
         this.bucket = bucket;
 

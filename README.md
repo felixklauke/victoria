@@ -135,3 +135,25 @@ public interface ConversionInterceptor {
     void onEntitySerialization(JsonDocument jsonDocument, Class entityClass);
 }
 ```
+
+# Proxied Datastructures
+You want to manage your data in a java data structure like a list or a queue but you dont want
+to handle the persistence of the data on your own? Use proxies: 
+
+### List
+```java
+List<Model> list = ProxiedDatastructures.createList(databaseDocumentName, bucket);
+```
+
+### Map
+Sadly we only can support Maps with a String as key as couchbase sucks.
+```java
+Map<String, Model> map = ProxiedDatastructures.createMap(databaseDocumentName, bucket);
+```
+
+### Queue
+```java
+Queue<TestModel> queue = ProxiedDatastructures.createQueue("players", bucket);
+```
+
+CAUTION: We currently dont hold a lock on proxied documents in a database, so dont modify a document from other sources.

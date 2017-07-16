@@ -12,7 +12,7 @@ import de.d3adspace.victoria.container.EntityMetaContainerFactory;
 import de.d3adspace.victoria.exception.VictoriaException;
 import de.d3adspace.victoria.executor.VictoriaThreadFactory;
 import de.d3adspace.victoria.lifecycle.LifecycleWatcher;
-import de.d3adspace.victoria.proxy.ListProxy;
+import de.d3adspace.victoria.proxy.ProxiedDatastructures;
 import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
 import de.d3adspace.victoria.skeleton.SkeletonLifecycleWatcher;
 import de.d3adspace.victoria.validation.Validate;
@@ -234,7 +234,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public List<ElementType> getListProxy(String listDocumentName) {
-        return new ListProxy<>(listDocumentName, this.bucket);
+        return ProxiedDatastructures.createList(listDocumentName, this.bucket);
     }
 
     @Override

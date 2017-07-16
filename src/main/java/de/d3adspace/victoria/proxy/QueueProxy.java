@@ -38,7 +38,7 @@ public class QueueProxy<ElementType> extends AbstractQueue<ElementType> {
      * @param queueName The name of the queue in the database.
      * @param bucket    The bucket.
      */
-    public QueueProxy(String queueName, Bucket bucket) {
+    QueueProxy(String queueName, Bucket bucket) {
         this.queueName = queueName;
         this.bucket = bucket;
 

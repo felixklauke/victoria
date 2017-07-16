@@ -21,7 +21,7 @@ public class MapProxy<ValueType> extends AbstractMap<String, ValueType> {
 
     private Map<String, ValueType> wrappedHandle;
 
-    public MapProxy(String mapName, Bucket bucket) {
+    MapProxy(String mapName, Bucket bucket) {
         this.mapName = mapName;
         this.bucket = bucket;
         this.wrappedHandle = new HashMap<>();
