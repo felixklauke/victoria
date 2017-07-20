@@ -22,7 +22,7 @@ public interface LifecycleWatcher<ElementType> {
     /**
      * Called after an element was loaded by its primary ID.
      *
-     * @param element The element.
+     * @param element        The element.
      * @param entityDocument The document the entity was created from.
      */
     void postLoad(ElementType element, EntityDocument<ElementType> entityDocument);
@@ -31,14 +31,14 @@ public interface LifecycleWatcher<ElementType> {
      * Called after an element was loaded with a n1ql query.
      *
      * @param element The element.
-     * @param row The row the element was created from.
+     * @param row     The row the element was created from.
      */
     void postLoad(ElementType element, N1qlQueryRow row);
 
     /**
      * Called after an entity was persisted in a bucket.
      *
-     * @param element The element.
+     * @param element        The element.
      * @param entityDocument The document.
      */
     void postPersist(ElementType element, EntityDocument<ElementType> entityDocument);

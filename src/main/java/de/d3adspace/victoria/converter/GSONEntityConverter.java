@@ -29,7 +29,7 @@ public class GSONEntityConverter implements EntityConverter<JsonDocument> {
     /**
      * Create a new converter instance.
      *
-     * @param gson The underlying gson instance.
+     * @param gson                  The underlying gson instance.
      * @param conversionInterceptor the interceptor for all conversion actions.
      */
     public GSONEntityConverter(Gson gson, ConversionInterceptor conversionInterceptor) {

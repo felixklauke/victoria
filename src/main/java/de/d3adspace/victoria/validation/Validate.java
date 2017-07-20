@@ -29,8 +29,8 @@ public class Validate {
     /**
      * Check if an b is what you expect and throw an exception otherwise.
      *
-     * @param b The state to check.
-     * @param b1 The expected state.
+     * @param b       The state to check.
+     * @param b1      The expected state.
      * @param message the message.
      */
     public static void checkState(boolean b, boolean b1, String message) {
@@ -42,9 +42,9 @@ public class Validate {
     /**
      * Check if a given clazz has a given annotation or throw an exception otherwise.
      *
-     * @param sourceClazz The class to check.
+     * @param sourceClazz     The class to check.
      * @param annotationClazz The annotation to check for.
-     * @param message the message.
+     * @param message         the message.
      */
     public static void checkAnnotation(Class sourceClazz, Class annotationClazz, String message) {
         if (!sourceClazz.isAnnotationPresent(annotationClazz)) {

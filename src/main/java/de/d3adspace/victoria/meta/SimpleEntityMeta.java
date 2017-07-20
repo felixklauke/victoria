@@ -33,9 +33,10 @@ public class SimpleEntityMeta implements EntityMeta {
 
     /**
      * Create a new meta data holder by all its data.
+     *
      * @param entityTTL The ttl.
      * @param idField   The field.
-     * @param idPrefix The prefix og the id.
+     * @param idPrefix  The prefix og the id.
      * @param type
      */
     SimpleEntityMeta(EntityTTL entityTTL, Field idField, String idPrefix, String type) {

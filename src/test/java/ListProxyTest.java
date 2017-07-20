@@ -1,11 +1,8 @@
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
-import de.d3adspace.victoria.proxy.ListProxy;
+import de.d3adspace.victoria.proxy.ProxiedDatastructures;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -22,6 +19,10 @@ public class ListProxyTest {
 
         TestModel testModel = new TestModel(UUID.randomUUID(), stringMap);
 
-        List<TestModel> list = new ListProxy<>("aaaa:test:list", bucket);
+        List<TestModel> list = ProxiedDatastructures.createList("players", bucket);
+
+        Map<String, TestModel> map = ProxiedDatastructures.createMap("players", bucket);
+
+        Queue<TestModel> queue = ProxiedDatastructures.createQueue("players", bucket);
     }
 }

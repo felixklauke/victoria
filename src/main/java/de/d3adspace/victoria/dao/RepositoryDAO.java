@@ -71,7 +71,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
      * Create a new repository dao instance.
      *
      * @param elementClazz The class of the element to handle.
-     * @param bucket The underlying bucket
+     * @param bucket       The underlying bucket
      * @param repository   The underlying repository.
      */
     RepositoryDAO(Class<ElementType> elementClazz, Bucket bucket, Repository repository, Gson gson) {

@@ -10,14 +10,14 @@ import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
 
 /**
  * Basic victoria interface containing all main functions.
- *
+ * <p>
  * We want to make it easy to persist arbitrary interfaces in a couchbase backend.
- *
+ * <p>
  * Victoria's main functionality should be to make the database access of couchbase's more clean and easier for the
  * developer mainly by enhancing its default implementations of entity repositories by using gson and furthermore
  * providing interfaces to create custom database access objects aka DAO {@link de.d3adspace.victoria.dao.DAO}. You can
  * handle entity persistence with a model class and some victoria annotations:
- *
+ * <p>
  * <pre>
  *     <code>
  *          {@literal @}{@link de.d3adspace.victoria.annotation.EntityTTL}(20)
@@ -29,22 +29,22 @@ import de.d3adspace.victoria.query.CouchbaseN1qlProxy;
  *          }
  *     </code>
  * </pre>
- *
+ * <p>
  * It is possible to listen for entity conversion using an {@link ConversionInterceptor}
- *
+ * <p>
  * All Daos will record their stats in a VictoriaAnalytics instance provided by
  * {@link CouchbaseN1qlProxy#getVictoriaAnalytics()}
- *
+ * <p>
  * Remember: DAOs will also use an internal instance of a gson modified couchbase repository.
- *
+ * <p>
  * The secondary goal is to hide the couchbase database access layer behind the proxy pattern and take default java
  * data structures (List, Set, Map, Queue, Stack) and add a backend handler that will persist them in a couchbase
  * backend:
- *
+ * <p>
  * <ul>
- *     <li>{@link de.d3adspace.victoria.proxy.ListProxy} - Proxy to persist List's</li>
- *     <li>{@link de.d3adspace.victoria.proxy.QueueProxy} - Proxy to persist Queue's</li>
- *     <li>{@link de.d3adspace.victoria.proxy.MapProxy} - Proxy to persist Maps</li>
+ * <li>{@link de.d3adspace.victoria.proxy.ListProxy} - Proxy to persist List's</li>
+ * <li>{@link de.d3adspace.victoria.proxy.QueueProxy} - Proxy to persist Queue's</li>
+ * <li>{@link de.d3adspace.victoria.proxy.MapProxy} - Proxy to persist Maps</li>
  * </ul>
  *
  * @author Felix 'SasukeKawaii' Klauke
@@ -102,10 +102,10 @@ public interface Victoria {
     /**
      * Create a dao by its base class, the bucket and an interceptor using a default gson instance.
      *
-     * @param elementClazz The class of the element you're persisting.
-     * @param bucket The bucket the entities are persisted in.
+     * @param elementClazz          The class of the element you're persisting.
+     * @param bucket                The bucket the entities are persisted in.
      * @param conversionInterceptor The conversion interceptor.
-     * @param <ElementType> The type of the entity you're persisting.
+     * @param <ElementType>         The type of the entity you're persisting.
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, ConversionInterceptor conversionInterceptor);
@@ -124,11 +124,11 @@ public interface Victoria {
     /**
      * Create a DAO by all its necessary data.
      *
-     * @param elementClazz The class of the element you're persisting.
-     * @param bucket The bucket the entities are persisted in.
-     * @param gson The gson instance.
+     * @param elementClazz          The class of the element you're persisting.
+     * @param bucket                The bucket the entities are persisted in.
+     * @param gson                  The gson instance.
      * @param conversionInterceptor The conversion interceptor.
-     * @param <ElementType> The type of the entity you're persisting.
+     * @param <ElementType>         The type of the entity you're persisting.
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, Bucket bucket, Gson gson, ConversionInterceptor conversionInterceptor);
@@ -146,10 +146,10 @@ public interface Victoria {
     /**
      * Create a DAO by all its data except of the gson instance, a default instance will be used instead.
      *
-     * @param elementClazz The class of the entity you're persisting.
-     * @param couchbaseCluster The cluster whose bucket you want to use.
+     * @param elementClazz          The class of the entity you're persisting.
+     * @param couchbaseCluster      The cluster whose bucket you want to use.
      * @param conversionInterceptor The conversion interceptor.
-     * @param <ElementType> The type of the entity you're persisting.
+     * @param <ElementType>         The type of the entity you're persisting.
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, ConversionInterceptor conversionInterceptor);
@@ -167,11 +167,11 @@ public interface Victoria {
     /**
      * Create a DAO by all its data but a couchbase cluster the bucket will be taken from.
      *
-     * @param elementClazz The class of the entity you're persisting.
-     * @param couchbaseCluster The cluster whose bucket you want to use.
-     * @param gson The gson instance.
+     * @param elementClazz          The class of the entity you're persisting.
+     * @param couchbaseCluster      The cluster whose bucket you want to use.
+     * @param gson                  The gson instance.
      * @param conversionInterceptor The conversion interceptor.
-     * @param <ElementType> The type of the entity you're persisting.
+     * @param <ElementType>         The type of the entity you're persisting.
      * @return The DAO.
      */
     <ElementType> DAO<ElementType> createDAO(Class<ElementType> elementClazz, CouchbaseCluster couchbaseCluster, Gson gson, ConversionInterceptor conversionInterceptor);
