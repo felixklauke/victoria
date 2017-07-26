@@ -181,7 +181,7 @@ List<Model> list = ProxiedDatastructures.createList(databaseDocumentName, bucket
 ```
 
 ### Map
-Sadly we only can support Maps with a String as key as couchbase sucks.
+Sadly we can only support Maps with a String as key because couchbase sucks.
 ```java
 Map<String, Model> map = ProxiedDatastructures.createMap(databaseDocumentName, bucket);
 ```

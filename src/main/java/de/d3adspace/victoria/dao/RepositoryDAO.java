@@ -162,6 +162,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void getElement(String id, Consumer<ElementType> consumer) {
+        Validate.checkNotNull(id, "id cannot be null");
         Validate.checkNotNull(consumer, "consumer cannot be null");
 
         this.executorService.execute(() -> consumer.accept(this.getElement(id)));
@@ -169,6 +170,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void getElement(N1qlQuery query, Consumer<ElementType> consumer) {
+        Validate.checkNotNull(query, "query cannot be null");
         Validate.checkNotNull(consumer, "consumer cannot be null");
 
         this.executorService.execute(() -> consumer.accept(this.getElement(query)));
@@ -176,6 +178,7 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void getElements(N1qlQuery n1qlQuery, Consumer<List<ElementType>> consumer) {
+        Validate.checkNotNull(n1qlQuery, "query cannot be null");
         Validate.checkNotNull(consumer, "consumer cannot be null");
 
         this.executorService.execute(() -> consumer.accept(this.getElements(n1qlQuery)));
@@ -229,11 +232,15 @@ public class RepositoryDAO<ElementType> implements DAO<ElementType> {
 
     @Override
     public void setLifecycleWatcher(LifecycleWatcher<ElementType> lifecycleWatcher) {
+        Validate.checkNotNull(lifecycleWatcher, "lifecycleWatcher cannot be null");
+
         this.lifecycleWatcher = lifecycleWatcher;
     }
 
     @Override
     public List<ElementType> getListProxy(String listDocumentName) {
+        Validate.checkNotNull(listDocumentName, "listDocumentName cannot be null");
+
         return ProxiedDatastructures.createList(listDocumentName, this.bucket);
     }
 
