@@ -13,11 +13,15 @@ public class SimpleVictoriaAnalytics implements VictoriaAnalytics {
     private final List<N1qlQuery> queryHistory;
 
     SimpleVictoriaAnalytics() {
+
+
         this.queryHistory = new ArrayList<>();
     }
 
     @Override
     public void recordN1qlQuery(N1qlQuery query) {
+
+
         this.queryHistory.add(query);
     }
 
